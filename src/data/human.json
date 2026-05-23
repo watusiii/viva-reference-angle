@@ -1,0 +1,142 @@
+[
+  {
+    "rx": -11,
+    "ry": -1,
+    "rz": 3,
+    "url": "./static/pipeline/input/sample_002.jpg",
+    "cx": 475,
+    "cy": 627,
+    "cs": 765,
+    "w": 1024,
+    "h": 1536,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": -10,
+    "ry": 4,
+    "rz": 1,
+    "url": "./static/pipeline/input/sample_004.jpg",
+    "cx": 509,
+    "cy": 600,
+    "cs": 789,
+    "w": 1024,
+    "h": 1536,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": 8,
+    "ry": 35,
+    "rz": -3,
+    "url": "./static/pipeline/input/sample_005.jpg",
+    "cx": 569,
+    "cy": 577,
+    "cs": 621,
+    "w": 1024,
+    "h": 1280,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": 15,
+    "ry": 30,
+    "rz": -5,
+    "url": "./static/pipeline/input/sample_006.jpg",
+    "cx": 511,
+    "cy": 544,
+    "cs": 667,
+    "w": 1024,
+    "h": 1536,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": -1,
+    "ry": 29,
+    "rz": -4,
+    "url": "./static/pipeline/input/sample_007.jpg",
+    "cx": 540,
+    "cy": 749,
+    "cs": 670,
+    "w": 1024,
+    "h": 1536,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": 20,
+    "ry": 26,
+    "rz": -6,
+    "url": "./static/pipeline/input/sample_008.jpg",
+    "cx": 514,
+    "cy": 294,
+    "cs": 198,
+    "w": 1024,
+    "h": 701,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": -44,
+    "ry": 3,
+    "rz": 6,
+    "url": "./static/pipeline/input/sample_011.jpg",
+    "cx": 563,
+    "cy": 921,
+    "cs": 819,
+    "w": 1024,
+    "h": 1536,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": -12,
+    "ry": 6,
+    "rz": 3,
+    "url": "./static/pipeline/input/sample_012.jpg",
+    "cx": 565,
+    "cy": 284,
+    "cs": 393,
+    "w": 1024,
+    "h": 683,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": 30,
+    "ry": 29,
+    "rz": -7,
+    "url": "./static/pipeline/input/sample_013.jpg",
+    "cx": 469,
+    "cy": 523,
+    "cs": 424,
+    "w": 1024,
+    "h": 1536,
+    "tags": [
+      "human"
+    ]
+  },
+  {
+    "rx": 25,
+    "ry": 49,
+    "rz": -11,
+    "url": "./static/pipeline/input/sample_015.jpg",
+    "cx": 587,
+    "cy": 639,
+    "cs": 909,
+    "w": 1024,
+    "h": 1536,
+    "tags": [
+      "human"
+    ]
+  }
+]
