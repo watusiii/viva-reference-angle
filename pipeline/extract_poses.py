@@ -9,6 +9,7 @@ import mediapipe as mp
 import numpy as np
 import json
 import os
+import shutil
 from pathlib import Path
 from typing import List, Dict, Optional
 
@@ -173,8 +174,8 @@ def estimate_head_pose(image_path: str) -> Optional[Dict]:
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blur_score = cv2.Laplacian(gray, cv2.CV_64F).var()
 
-    # Skip blurry images (threshold ~50, adjust as needed)
-    if blur_score < 50:
+    # Skip blurry images (threshold ~20, adjust as needed)
+    if blur_score < 20:
         print(f"Too blurry ({blur_score:.1f}): {image_path}")
         return None
 
@@ -202,9 +203,10 @@ def check_blur(image_path: str, threshold: float = 100.0) -> float:
     return cv2.Laplacian(image, cv2.CV_64F).var()
 
 
-def process_directory(input_dir: str, output_json: str):
+def process_directory(input_dir: str, output_paths: List[str]):
     """
     Process all images in directory and generate JSON index.
+    Writes to multiple output locations.
     """
     input_path = Path(input_dir)
     results = []
@@ -231,11 +233,25 @@ def process_directory(input_dir: str, output_json: str):
 
     print(f"\nSuccessfully processed: {len(results)}/{len(image_files)}")
 
-    # Write JSON output
-    with open(output_json, 'w') as f:
-        json.dump(results, f, indent=2)
+    # Copy processed images to static directory for web serving
+    static_input_dir = "./static/pipeline/input"
+    os.makedirs(static_input_dir, exist_ok=True)
 
-    print(f"Saved to: {output_json}")
+    print(f"\nCopying {len(results)} images to {static_input_dir}...")
+    for result in results:
+        # Extract filename from URL
+        filename = result['url'].split('/')[-1]
+        src_path = os.path.join(input_dir, filename)
+        dst_path = os.path.join(static_input_dir, filename)
+        shutil.copy2(src_path, dst_path)
+    print("Images copied successfully")
+
+    # Write JSON to all output paths
+    for output_json in output_paths:
+        os.makedirs(os.path.dirname(output_json), exist_ok=True)
+        with open(output_json, 'w') as f:
+            json.dump(results, f, indent=2)
+        print(f"Saved to: {output_json}")
 
     # Print angle distribution summary
     if results:
@@ -252,11 +268,15 @@ def process_directory(input_dir: str, output_json: str):
 if __name__ == "__main__":
     # Default paths
     input_dir = "./pipeline/input"
-    output_json = "./pipeline/output/human.json"
+    output_paths = [
+        "./pipeline/output/human.json",
+        "./src/data/human.json",
+        "./static/pipeline/output/human.json"
+    ]
 
     if not os.path.exists(input_dir):
         print(f"Error: Input directory not found: {input_dir}")
         print("Please create it and add portrait images.")
         exit(1)
 
-    process_directory(input_dir, output_json)
+    process_directory(input_dir, output_paths)

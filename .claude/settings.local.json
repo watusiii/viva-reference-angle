@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(py pipelineextract_poses.py:*)"
+      "Bash(py pipelineextract_poses.py:*)",
+      "Bash(py pipeline/extract_poses.py)",
+      "Bash(py pipeline/download_samples.py)"
     ]
   }
 }

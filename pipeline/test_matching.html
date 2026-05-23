@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Head Pose Matching Debug</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .controls {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .slider-group {
+            margin: 15px 0;
+        }
+        .slider-group label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        .slider-group input[type="range"] {
+            width: 300px;
+            margin: 0 10px;
+        }
+        .slider-group .value {
+            display: inline-block;
+            width: 60px;
+            text-align: right;
+            font-family: monospace;
+            color: #4CAF50;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .photo-card {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 10px;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .photo-card.top-match {
+            border-color: #4CAF50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+        .photo-card.good-match {
+            border-color: #FFC107;
+        }
+        .photo-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .photo-info {
+            margin-top: 8px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .photo-info .angles {
+            font-family: monospace;
+            color: #64B5F6;
+        }
+        .photo-info .score {
+            font-family: monospace;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .photo-info .filename {
+            color: #999;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+        .stats {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .stats h3 {
+            margin-top: 0;
+        }
+        .match-formula {
+            background: #333;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #FFD700;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Head Pose Matching Debug Tool</h1>
+
+    <div class="controls">
+        <h3>Target Skull Rotation (What viewer searches for)</h3>
+        <div class="slider-group">
+            <label>Pitch (rx):</label>
+            <input type="range" id="rx" min="-90" max="90" value="0">
+            <span class="value" id="rx-val">0°</span>
+            <span style="color: #999; font-size: 11px; margin-left: 10px;">up/down tilt</span>
+        </div>
+        <div class="slider-group">
+            <label>Yaw (ry):</label>
+            <input type="range" id="ry" min="-90" max="90" value="0">
+            <span class="value" id="ry-val">0°</span>
+            <span style="color: #999; font-size: 11px; margin-left: 10px;">left/right turn</span>
+        </div>
+        <div class="slider-group">
+            <label>Roll (rz):</label>
+            <input type="range" id="rz" min="-90" max="90" value="0">
+            <span class="value" id="rz-val">0°</span>
+            <span style="color: #999; font-size: 11px; margin-left: 10px;">head tilt</span>
+        </div>
+        <div class="match-formula">
+            Match formula (from Search.ts): flip if ry signs opposite, then score = |rx_diff| + |ry_diff| + |rz_diff|<br>
+            Lower score = better match. Green border = best match, yellow = top 5
+        </div>
+    </div>
+
+    <div class="stats">
+        <h3>Dataset Stats</h3>
+        <div id="stats-content">Loading...</div>
+    </div>
+
+    <h3>All Photos (sorted by match score)</h3>
+    <div class="grid" id="photo-grid"></div>
+
+    <script>
+        let photoData = [];
+
+        // Load human.json
+        fetch('../static/pipeline/output/human.json')
+            .then(r => r.json())
+            .then(data => {
+                photoData = data;
+                updateStats();
+                updateMatching();
+            })
+            .catch(err => {
+                document.getElementById('stats-content').innerHTML =
+                    '<span style="color: #f44336;">Error loading human.json: ' + err + '</span>';
+            });
+
+        // Sliders
+        ['rx', 'ry', 'rz'].forEach(axis => {
+            const slider = document.getElementById(axis);
+            const valDisplay = document.getElementById(axis + '-val');
+            slider.addEventListener('input', () => {
+                valDisplay.textContent = slider.value + '°';
+                updateMatching();
+            });
+        });
+
+        function updateStats() {
+            const pitches = photoData.map(p => p.rx);
+            const yaws = photoData.map(p => p.ry);
+            const rolls = photoData.map(p => p.rz);
+
+            const stats = `
+                <strong>${photoData.length} photos loaded</strong><br>
+                Pitch (rx): ${Math.min(...pitches)}° to ${Math.max(...pitches)}° (avg ${avg(pitches)}°)<br>
+                Yaw (ry): ${Math.min(...yaws)}° to ${Math.max(...yaws)}° (avg ${avg(yaws)}°)<br>
+                Roll (rz): ${Math.min(...rolls)}° to ${Math.max(...rolls)}° (avg ${avg(rolls)}°)
+            `;
+            document.getElementById('stats-content').innerHTML = stats;
+        }
+
+        function avg(arr) {
+            return Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
+        }
+
+        function updateMatching() {
+            const targetRx = parseInt(document.getElementById('rx').value);
+            const targetRy = parseInt(document.getElementById('ry').value);
+            const targetRz = parseInt(document.getElementById('rz').value);
+
+            // Calculate matches (same logic as Search.ts)
+            const matches = photoData.map(item => {
+                // Auto-flip if yaw signs opposite
+                const flip = item.ry * targetRy < 0;
+                const ry = flip ? -item.ry : item.ry;
+                const rz = flip ? -item.rz : item.rz;
+
+                // Match score = sum of absolute angle differences
+                const match = Math.abs(item.rx - targetRx) +
+                             Math.abs(ry - targetRy) +
+                             Math.abs(rz - targetRz);
+
+                return {
+                    ...item,
+                    flip,
+                    adjustedRy: ry,
+                    adjustedRz: rz,
+                    match
+                };
+            });
+
+            // Sort by match score (lower = better)
+            matches.sort((a, b) => a.match - b.match);
+
+            // Render
+            const grid = document.getElementById('photo-grid');
+            grid.innerHTML = '';
+
+            matches.forEach((photo, idx) => {
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                if (idx === 0) card.classList.add('top-match');
+                else if (idx < 5) card.classList.add('good-match');
+
+                const filename = photo.url.split('/').pop();
+
+                card.innerHTML = `
+                    <img src="../static/pipeline/input/${filename}" alt="${filename}">
+                    <div class="photo-info">
+                        <div class="score">Score: ${photo.match}° ${idx === 0 ? '👑 BEST' : ''}</div>
+                        <div class="angles">
+                            rx: ${photo.rx}°, ry: ${photo.ry}°, rz: ${photo.rz}°
+                        </div>
+                        ${photo.flip ? '<div style="color: #FF9800;">⚡ Flipped (ry/rz negated)</div>' : ''}
+                        ${photo.flip ? `<div class="angles" style="color: #FF9800;">Used: ry=${photo.adjustedRy}°, rz=${photo.adjustedRz}°</div>` : ''}
+                        <div class="filename">${filename}</div>
+                        <div style="color: #666; font-size: 10px; margin-top: 4px;">
+                            Δrx=${Math.abs(photo.rx - targetRx)}°
+                            Δry=${Math.abs(photo.adjustedRy - targetRy)}°
+                            Δrz=${Math.abs(photo.adjustedRz - targetRz)}°
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
