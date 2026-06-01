@@ -22,3 +22,22 @@ yarn-error.log*
 
 docs/search-photos-by-model-tool
 tmpclaude*
+.claude 
+
+# Pipeline data - large image files
+pipeline/input/
+pipeline/output/
+pipeline/temp_ffhq/
+pipeline/ffhq/
+static/pipeline/input/
+static/pipeline/output/
+
+# FFHQ dataset files
+*.tfrecords
+ffhq-dataset-v2.json
+images1024x1024/
+thumbnails128x128/
+in-the-wild-images/
+pipeline/temp_ffhq_thumbs/
+static/pipeline/
+docs/
