@@ -1,0 +1,6 @@
+KGAT_b6c1da8936af04c05157f98e23667e1d
+
+export KAGGLE_API_TOKEN=KGAT_b6c1da8936af04c05157f98e23667e1d
+
+
+mkdir -p ~/.kaggle && echo KGAT_b6c1da8936af04c05157f98e23667e1d > ~/.kaggle/access_token && chmod 600 ~/.kaggle/access_token

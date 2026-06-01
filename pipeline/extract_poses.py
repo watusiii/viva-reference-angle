@@ -159,9 +159,9 @@ def estimate_head_pose(image_path: str) -> Optional[Dict]:
 
     # Map to viewer: if value > 90 or < -90, likely backwards - invert
     if abs(pitch_deg_raw) > 90:
-        pitch_deg = 180 - pitch_deg_raw if pitch_deg_raw > 0 else -180 - pitch_deg_raw
+        pitch_deg = -(180 - pitch_deg_raw if pitch_deg_raw > 0 else -180 - pitch_deg_raw)
     else:
-        pitch_deg = pitch_deg_raw
+        pitch_deg = -pitch_deg_raw  # Negate for viewer coordinate system
 
     yaw_deg = -yaw_deg_raw  # Negate for viewer coordinate system
 
