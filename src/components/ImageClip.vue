@@ -98,8 +98,8 @@
                 position: absolute;
                 z-index: 1;
                 box-sizing: border-box;
-                border: solid 1px #409EFF;
-                background-color: rgba(64, 158, 255, 0.25);
+                border: solid 1px #1a1a1a;
+                background-color: rgba(26, 26, 26, 0.25);
                 cursor: move;
             }
         }

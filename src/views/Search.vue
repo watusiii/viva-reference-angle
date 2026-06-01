@@ -68,20 +68,31 @@
                 </div>
 
                 <div class="info" style="color: #bfbfbf">
-                    <div>Author: x6udpngx</div>
                     <div>
-                        Special Thanks: <a href="https://github.com/xrabohrok" target="_blank">xrabohrok</a>
-                        - Thank you for helping improve this tool!
+                        Revived and hosted by <a href="https://extendo.bet" target="_blank">Watusi / Extendo</a>
                     </div>
-                    <div>Latest update: 2023-07-11</div>
+                    <div>Revival: 2026-06</div>
                     <div>
-                        <a href="https://github.com/x6ud/x6ud.github.io/issues" target="_blank">Leave a message</a>
+                        <span>Support the revival:</span>
+                        <a href="https://ko-fi.com/watusi" target="_blank">
+                            <span style="vertical-align: middle;">Ko-fi.com/watusi</span>
+                        </a>
+                    </div>
+                    <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #2a2a2a;">
+                        Original author: <a href="https://github.com/x6ud" target="_blank">x6udpngx</a>
                     </div>
                     <div>
-                        <a href="https://github.com/x6ud/search-photos-by-model-tool" target="_blank">Source code</a>
+                        Special thanks: <a href="https://github.com/xrabohrok" target="_blank">xrabohrok</a>
+                    </div>
+                    <div>Original last update: 2023-07-11</div>
+                    <div>
+                        <a href="https://github.com/x6ud/x6ud.github.io/issues" target="_blank">Leave a message (original repo)</a>
                     </div>
                     <div>
-                        <span>Support me:</span>
+                        <a href="https://github.com/x6ud/search-photos-by-model-tool" target="_blank">Original source code</a>
+                    </div>
+                    <div>
+                        <span>Support original author:</span>
                         <a href="https://ko-fi.com/x6udpngx" target="_blank">
                             <span style="vertical-align: middle;">Ko-fi.com/x6udpngx</span>
                         </a>

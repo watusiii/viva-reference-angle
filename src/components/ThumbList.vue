@@ -51,7 +51,8 @@
             transition: background-color .3s;
 
             &.active {
-                background-color: #69b7ff;
+                background-color: #1a1a1a;
+                color: #fff;
             }
 
             img {

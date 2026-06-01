@@ -57,6 +57,35 @@ body {
     width: 100%;
     height: 100%;
     font-size: 14px;
-    font-family: arial, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Override ant-design-vue blue defaults */
+a {
+    color: #1a1a1a;
+}
+a:hover {
+    color: #000;
+    opacity: 0.75;
+}
+.ant-btn-primary {
+    background-color: #1a1a1a !important;
+    border-color: #1a1a1a !important;
+    color: #fff !important;
+}
+.ant-btn-primary:hover, .ant-btn-primary:focus {
+    background-color: #000 !important;
+    border-color: #000 !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-checkbox-checked::after {
+    background-color: #1a1a1a !important;
+    border-color: #1a1a1a !important;
+}
+.ant-slider-track {
+    background-color: #1a1a1a !important;
+}
+.ant-slider-handle {
+    border-color: #1a1a1a !important;
 }
 </style>

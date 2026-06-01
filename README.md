@@ -1,28 +1,72 @@
-# x6ud.github.io
+# Reference Angle
 
-## Project setup
-```
+Browser tool for figure artists. Rotate a 3D head, get real photographs at that camera angle. Real photos. No AI generation.
+
+**Live:** referenceangle.art *(URL pending)*
+
+ReferenceAngle.com went offline. Artists who used it daily had no replacement. This is the revival.
+
+---
+
+## Credits
+
+**Revived and hosted by:** [Watusi / Extendo](https://extendo.bet)
+Donations: [ko-fi.com/watusi](https://ko-fi.com/watusi)
+
+**Original author:** [x6udpngx](https://github.com/x6ud) built the tool. The editor, the pose search, all of it.
+Donations: [ko-fi.com/x6udpngx](https://ko-fi.com/x6udpngx)
+
+**Special thanks:** [xrabohrok](https://github.com/xrabohrok)
+
+Original repo: [x6ud/search-photos-by-model-tool](https://github.com/x6ud/search-photos-by-model-tool)
+
+---
+
+## What's in this repo
+
+This is the lite version. 553 portrait photos from FFHQ, indexed by yaw/pitch/roll. Small enough to clone and host free.
+
+Full version is 50,001 photos. That set lives offline. To build your own full version, run the pipeline in `pipeline/`.
+
+---
+
+## Run locally
+
+```bash
 npm install
-```
-
-## Development
-```
 npm run serve
 ```
 
-## Compiles and minifies for production
-```
+Visit http://localhost:8080.
+
+## Build for production
+
+```bash
 npm run build
 ```
 
-## Adding photos
-1. Apply for a Flickr API key [here](https://www.flickr.com/services/apps/create/apply/).
+Output is in `dist/`. Static. Drop it on any host.
 
-2. Run the project with `npm run serve`.
+---
 
-3. Open `/#/editor`, paste your API key into the textbox requesting it.
+## Build a custom dataset
 
-## Adding models
-1. Put the .obj file into `static/models`. It's better to keep files within 1MB. I use Blender and MeshLab to reduce the models.
+The `pipeline/` folder has the Python tooling. Install from `pipeline/requirements.txt`.
 
-2. Add model url and author link to `src/models.ts`.
+1. Drop photos in `pipeline/input/`
+2. Run `extract_poses.py`. MediaPipe does the pose math.
+3. Output writes to `src/data/human.json`
+4. Copy the indexed photos into `static/pipeline/input/`
+5. `npm run build`
+
+---
+
+## Editor mode
+
+`/#/editor` for manual photo tagging. Needs a Flickr API key for the search step.
+
+---
+
+## License
+
+See LICENSE. Revival respects the original terms.

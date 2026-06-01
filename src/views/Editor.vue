@@ -281,7 +281,7 @@
         user-select: none;
 
         &.active {
-            background: #1890ff;
+            background: #1a1a1a;
         }
 
         img {
