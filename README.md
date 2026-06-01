@@ -11,7 +11,7 @@ ReferenceAngle.com went offline. Artists who used it daily had no replacement. T
 ## Credits
 
 **Revived and hosted by:** [Watusi / Extendo](https://extendo.bet)
-Donations: [ko-fi.com/watusi](https://ko-fi.com/watusi)
+Donations: [ko-fi.com/vivacarta](https://ko-fi.com/vivacarta)
 
 **Original author:** [x6udpngx](https://github.com/x6ud) built the tool. The editor, the pose search, all of it.
 Donations: [ko-fi.com/x6udpngx](https://ko-fi.com/x6udpngx)

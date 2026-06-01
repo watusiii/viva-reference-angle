@@ -8,6 +8,7 @@ import models from '../models';
 import {DataRecord, getPhotoId} from '../utils/photo';
 
 import {degEulerToQuaternion, distance} from '../utils/quaternion';
+import isImageExists from '../utils/is-image-exists';
 
 type SearchResult = {
     flip: boolean;
@@ -64,7 +65,7 @@ export default class Search extends Vue.extend({
         }
     },
     methods: {
-        search() {
+        async search() {
             let data = this.keyword ? this.data.filter(item => item.tags?.includes(this.keyword)) : this.data;
             const direction = degEulerToQuaternion(this.model.rotateX + 180, this.model.rotateY + 180, this.model.rotateZ + 180);
             const result: SearchResult[] = data.map(item => {
@@ -75,9 +76,19 @@ export default class Search extends Vue.extend({
                 const match = distance(direction, degEulerToQuaternion(rx + 180, ry + 180, rz + 180));
                 return {...item, flip, ry, rz, match};
             });
-            // first 30 best results
+            // sort and get first 30 best matches
             result.sort((a, b) => a.match - b.match);
-            this.result = result.slice(0, Math.min(result.length, 30));
+            const top30 = result.slice(0, Math.min(result.length, 30));
+
+            // filter out 404'd images
+            const validResults: SearchResult[] = [];
+            for (const item of top30) {
+                if (await isImageExists(item.url)) {
+                    validResults.push(item);
+                }
+            }
+
+            this.result = validResults;
             this.collapseSearchConditions = true;
         },
         show(img: SearchResult) {

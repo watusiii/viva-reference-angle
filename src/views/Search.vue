@@ -74,8 +74,8 @@
                     <div>Revival: 2026-06</div>
                     <div>
                         <span>Support the revival:</span>
-                        <a href="https://ko-fi.com/watusi" target="_blank">
-                            <span style="vertical-align: middle;">Ko-fi.com/watusi</span>
+                        <a href="https://ko-fi.com/vivacarta" target="_blank">
+                            <span style="vertical-align: middle;">Ko-fi.com/vivacarta</span>
                         </a>
                     </div>
                     <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #2a2a2a;">
